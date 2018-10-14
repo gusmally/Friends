@@ -21,8 +21,17 @@ var Player = function (elementName) {
       position[1] = 0;
     }
 
-    if (position[0] >= innerHeight - tileSize) {
-      position[0] = innerHeight - tileSize;
+    
+    //if (position[0] >= innerWidth - tileSize) {
+    //  position[0] = innerWidth - tileSize;
+    //}
+
+    //if (position[1] >= innerHeight - tileSize) {
+    //  position[1] = innerHeight - tileSize;
+    //}
+
+    if (position[0] >= innerWidth - tileSize) {
+      position[0] = innerWidth - tileSize;
     }
 
     if (position[1] >= innerHeight - tileSize) {
@@ -68,11 +77,18 @@ function AI(characterToControl, characterToFollow) {
     }
 
     function moveTowardsPlayer() {
-        if(friend.getPosition()[1] >= ctl.getPosition()[1] + ctl.getSize()/2) {
-            ctl.move(distance);
+        if(friend.getPosition()[0] >= ctl.getPosition()[0] + ctl.getSize()/2) {
+            ctl.move(distance, 0);
         } else {
-            ctl.move(-distance);
+            ctl.move(-distance, 0);
         }
+
+        if(friend.getPosition()[1] >= ctl.getPosition()[1] + ctl.getSize()/2) {
+            ctl.move(0, distance);
+        } else {
+            ctl.move(0, -distance);
+        }
+
         setTimeout(function() {
             currentState = State.FOLLOWING;
         }, 400);

@@ -1,4 +1,4 @@
-﻿var lastUpdate = 0;
+var lastUpdate = 0;
 var gwinkie, hoodle, lisa, spider;
 var distance = 24;
 var score  = 0;
@@ -58,8 +58,6 @@ function AI(characterToControl, characterToFollow) {
         FOLLOWING: 1
     }
     var currentState = State.FOLLOWING;
-
-    console.log("hi");
 
     function repeat(cb, cbFinal, interval, count) {
         var timeout = function() {

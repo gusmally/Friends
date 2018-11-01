@@ -56,6 +56,7 @@ h1 {
     width: 47px;
     height: 53px;
     background-position: top 0px right -72px;
+    background-size: 150% 150%;
 }
 
 #gwinkie {
@@ -72,6 +73,7 @@ h1 {
 
 #right {
     background-position: top 0px left -37px;
+    background-size: 150px 150px;
 }
 
 #left {

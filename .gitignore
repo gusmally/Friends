@@ -39,3 +39,8 @@ Thumbs.db
 
 # dotCover
 *.dotCover
+
+# photoshop files
+images/arena.psd
+images/oldsprites.psd
+images/sprites.psd

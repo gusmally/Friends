@@ -1,61 +1,28 @@
 ﻿var lastUpdate = 0;
-var player, ball, opponent, ai;
+var player, follower, ai, follower2;
 var distance = 24;
 var score  = [0, 0];
 
-var Ball = function () {
-    var velocity = [0, 0];
-    var position = [0, 0];
-    var element = $('#ball');
-    var owner;
-    var halfTile = 32;
-    var paused = false;
-
-    function move(t) {
-        //console.log("hi!");
-        if (owner !== undefined) {
-            var ownerPosition = owner.getPosition();
-            position[1] = ownerPosition[1] + owner.getSize() / 2;
-            position[0] = ownerPosition[0] + owner.getSize();
-        } else {
-            if (position[1] - halfTile <= 0 ||
-                  position[1] + halfTile >= innerHeight) {
-                velocity[1] = -velocity[1];
-            }
-            position[0] += velocity[0] * t; 
-            position[1] += velocity[1] * t;     
-        }   
-
-        element.css('left', (position[0] - halfTile) + 'px');
-        element.css('top', (position[1] - halfTile) + 'px');
-    }
-
-    function update(t) {
-        move(t);
-    }
-
-    return {
-        update: update,
-        getOwner:     function()  { return owner; },
-        getVelocity:  function()  { return velocity }, 
-        getPosition:  function(p) { return position; },
-    }
-};
-
-var Player = function (elementName) {
+var Friend = function (elementName) {
     var position = [0,0];
     var tileSize = 128;
 
     var element = $('#'+elementName);
 
-    var move = function(y) {
-        console.log("hi");
+    var move = function(x, y) {
+        position[0] += x;
         position[1] += y;
 
+        if (position[0] <= 0)  {
+            position[0] = 0;
+        }        
         if (position[1] <= 0)  {
             position[1] = 0;
         }
 
+        if (position[0] >= innerWidth - tileSize) {
+            position[0] = innerWidth - tileSize;
+        }
         if (position[1] >= innerHeight - tileSize) {
             position[1] = innerHeight - tileSize;
         }
@@ -71,8 +38,8 @@ var Player = function (elementName) {
     }
 };
 
-function Follower(playerToControl) {
-    var ctl = playerToControl;
+function Follower(friendToControl) {
+    var friend = friendToControl;
     var State = {
         WAITING: 0,
         FOLLOWING: 1
@@ -94,26 +61,25 @@ function Follower(playerToControl) {
         }
     }
 
-  function moveTowardsPlayer() {
-        console.log("hhhhh");
-    if(ball.getPosition()[1] >= ctl.getPosition()[1] + ctl.getSize()/2) {
-      ctl.move(distance);
-    } else {
-      ctl.move(-distance);
+    function moveTowardsPlayer() {
+        if (this.getPosition()[1] >= friend.getPosition()[1] + friend.getSize()/2) {
+            friend.move(distance, distance);
+        } else {
+            friend.move(-distance, -distance);
+        }
+        setTimeout(function() {
+            currentState = State.FOLLOWING;
+        }, 400);
     }
-    setTimeout(function() {
-      currentState = State.FOLLOWING;
-    }, 400);
-  }
 
     function update() {
         switch (currentState) {
-        case State.FOLLOWING:
+            case State.FOLLOWING:
                 moveTowardsPlayer();
-            currentState = State.WAITING;
-          break;
+                currentState = State.WAITING;
+            break;
                 
-        case State.WAITING:
+            case State.WAITING:
             break;
         }
     }
@@ -127,40 +93,45 @@ function update(time) {
     var t = time - lastUpdate;
     lastUpdate = time;
 
-    ball.update(t);
     ai.update();
+    ai2.update();
 
     requestAnimationFrame(update);
 }
 
 $(document).ready(function() {
-  lastUpdate = 0;
-  player = Player('hoodle');
-  player.move(0);
-  opponent = Player('gwinkie');
-  opponent.move(0);
-  ball = Ball();
-  ai = Follower(opponent);
-    
-  $('#up')    .bind("pointerdown", function() {player.move(-distance);});
-  $('#down')  .bind("pointerdown", function() {player.move(distance);});
+    lastUpdate = 0;
+    player = Friend('hoodle');
+    player.move(0, -150);
+    follower = Friend('gwinkie');
+    follower.move(500, 0);
+    follower2 = Friend('spider');
+    follower2.move(500, -500);
+    ai = Follower(follower);
+    ai2 = Follower(follower2);
 
-  requestAnimationFrame(update);
+    requestAnimationFrame(update);
 });
 
+// handle player movement using WASD and arrow keys
 $(document).keydown(function(event) {
-  var tevent = event || window.event;
-  switch(String.fromCharCode(tevent.keyCode).toUpperCase()) {
-    case 'A':
-      player.move(-distance);
+  switch(event.keyCode) {
+    case 87:
+    case 38:
+      player.move(0, -distance);
       break;
-    case 'Z':
-      player.move(distance);
+    case 65:
+    case 37:
+      player.move(-distance, 0);
       break;
-    case ' ':
-      player.fire();
+    case 83:
+    case 40:
+      player.move(0, distance);
+      break;
+    case 68:
+    case 39:
+      player.move(distance, 0);
       break;
   }
-
   return false;
 });

@@ -27,61 +27,59 @@ h1 {
 
 .sprite {
     background-image: url("sprites.png");
-    width: 242px;
-    height: 73px;
+	width: 383px;
+	height: 218px;
 }
 
 #lisa {
     position: absolute;
     top: 0px;
     left: 1000px;
-    width: 57px;
-    height: 29px;
-    background-position: right 0px bottom -7px;
+    width: 114px;
+    height: 58px;
+    background-position: left -157px top 0px;
 }
 
 #spider {
     position: absolute;
     top: 0px;
     left: 500px;
-    width: 56px;
-    height: 36px;
-    background-position: right -14px top 0px;
+    width: 112px;
+    height: 72px;
+    background-position: right 0px top 0px;
 }
 
 #hoodle {
     position: absolute;
     top: 0px;
     left: 50px;
-    width: 47px;
-    height: 53px;
-    background-position: top 0px right -72px;
-    background-size: 150% 150%;
+    width: 94px;
+    height: 106px;
+    background-position: bottom 200px right -143px;
 }
 
 #gwinkie {
     position: absolute;
-    width: 42px;
-    height: 47px;
-    background-position: right -124px top 0px;
+    width: 84px;
+    height: 94px;
+    background-position: top 0px left -73px;
 }
 
 .control {
-    width: 36px;
-    height: 36px;
+    width: 73px;
+    height: 73px;
 }
 
 #right {
-    background-position: top 0px left -37px;
-    background-size: 150px 150px;
+    background-position: top -94px left -73px;
 }
 
 #left {
-    background-position: bottom 0px left -37px;
+    background-position: top 73px left 0px;
 }
 
 #down {
-    background-position: bottom 0px left 0px;
+    background-position: top -73px left 0px;
 }
 
 #up {
